@@ -6,7 +6,7 @@
 /*   By: kkhai-ki <kkhai-ki@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 16:06:42 by kkhai-ki          #+#    #+#             */
-/*   Updated: 2024/10/09 19:53:48 by kkhai-ki         ###   ########.fr       */
+/*   Updated: 2024/10/09 19:59:00 by kkhai-ki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,5 +33,10 @@ typedef struct s_table
 	time_t	time_to_sleep;
 	int		min_eat_count;
 }	t_table;
+
+bool	ft_isdigit(char c);
+bool	is_only_digits(char *str);
+int		philo_atoi(char *str);
+bool	is_valid_input(int ac, char **av);
 
 #endif
