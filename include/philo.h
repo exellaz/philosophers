@@ -6,14 +6,13 @@
 /*   By: kkhai-ki <kkhai-ki@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 16:06:42 by kkhai-ki          #+#    #+#             */
-/*   Updated: 2024/10/09 16:10:30 by kkhai-ki         ###   ########.fr       */
+/*   Updated: 2024/10/09 16:26:30 by kkhai-ki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PHILO_H
 # define PHILO_H
 
-# include "../libft/include/libft.h"
 # include <stdio.h>
 
 #endif

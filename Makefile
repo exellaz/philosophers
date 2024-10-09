@@ -6,7 +6,7 @@
 #    By: kkhai-ki <kkhai-ki@student.42kl.edu.my>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/09 16:06:48 by kkhai-ki          #+#    #+#              #
-#    Updated: 2024/10/09 16:06:48 by kkhai-ki         ###   ########.fr        #
+#    Updated: 2024/10/09 16:27:07 by kkhai-ki         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,7 +21,7 @@ ORANGE = \033[0;38;5;166m
 CC = gcc
 CFLAGS = -Wall -Wextra -Werror #-fsanitize=address -g3
 
-INCLUDE = -Iinclude -I$(LIBFT_DIR)
+INCLUDE = -Iinclude
 
 SRC_DIR = src
 
@@ -32,12 +32,8 @@ SRC = $(addprefix $(SRC_DIR)/, $(addsuffix .c, $(SRC_FILES)))
 OBJ_DIR = obj
 OBJ = $(addprefix $(OBJ_DIR)/, $(addsuffix .o, $(SRC_FILES)))
 
-LIBFT_DIR = libft
-LIBFT = $(LIBFT_DIR)/libft.a
-
 all :
 		@mkdir -p $(OBJ_DIR)
-		@make -C libft
 		@make $(NAME)
 
 $(OBJ_DIR)/%.o:		$(SRC_DIR)/%.c
@@ -49,12 +45,10 @@ $(NAME) :	$(OBJ)
 
 clean :
 			@rm -rf $(OBJ_DIR) && echo "$(RED)philo object files deleted.$(RESET)"
-			@make clean -C $(LIBFT_DIR)
 
 fclean:
 			@rm -rf $(OBJ_DIR) $(NAME) && echo "$(RED)philo deleted.$(RESET)"
 			@rm -rf $(OBJ_DIR) && echo "$(RED)philo object files deleted.$(RESET)"
-			@make fclean -C $(LIBFT_DIR)
 
 re:			fclean all
 
