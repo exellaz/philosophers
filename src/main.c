@@ -6,13 +6,17 @@
 /*   By: kkhai-ki <kkhai-ki@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 15:51:02 by kkhai-ki          #+#    #+#             */
-/*   Updated: 2024/10/09 16:11:01 by kkhai-ki         ###   ########.fr       */
+/*   Updated: 2024/10/09 19:53:08 by kkhai-ki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "philo.h"
+#include "philo.h"
 
-int	main(void)
+int	main(int ac, char *av[])
 {
-	printf("Hello World!\n");
+	t_table	table;
+
+	memset(&table, 0, sizeof(t_table));
+	if (ac < 5 || ac > 6)
+		return (1);
 }
