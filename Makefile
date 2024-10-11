@@ -6,7 +6,7 @@
 #    By: kkhai-ki <kkhai-ki@student.42kl.edu.my>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/09 16:06:48 by kkhai-ki          #+#    #+#              #
-#    Updated: 2024/10/09 16:27:07 by kkhai-ki         ###   ########.fr        #
+#    Updated: 2024/10/11 14:38:14 by kkhai-ki         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,7 +25,9 @@ INCLUDE = -Iinclude
 
 SRC_DIR = src
 
-SRC_FILES =	main
+SRC_FILES =	main	\
+			init	\
+			parse
 
 SRC = $(addprefix $(SRC_DIR)/, $(addsuffix .c, $(SRC_FILES)))
 
