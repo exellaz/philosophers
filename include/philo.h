@@ -6,7 +6,7 @@
 /*   By: kkhai-ki <kkhai-ki@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 16:06:42 by kkhai-ki          #+#    #+#             */
-/*   Updated: 2024/10/11 15:35:32 by kkhai-ki         ###   ########.fr       */
+/*   Updated: 2024/10/11 16:10:38 by kkhai-ki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,5 +57,13 @@ int		philo_atoi(char *str);
 bool	is_valid_input(int ac, char **av);
 
 void	init_table(t_table *table, int ac, char **av);
+
+int		start_sim(t_table *table);
+time_t	get_time_in_ms(void);
+void	sim_start_wait(time_t start_time);
+
+
+void	*single_philo_routine(t_philo *philo);
+void	*philosopher(void *data);
 
 #endif

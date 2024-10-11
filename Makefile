@@ -6,7 +6,7 @@
 #    By: kkhai-ki <kkhai-ki@student.42kl.edu.my>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/09 16:06:48 by kkhai-ki          #+#    #+#              #
-#    Updated: 2024/10/11 15:04:57 by kkhai-ki         ###   ########.fr        #
+#    Updated: 2024/10/11 16:11:18 by kkhai-ki         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,7 +19,7 @@ RESET = \033[0m
 ORANGE = \033[0;38;5;166m
 
 CC = gcc
-CFLAGS = -Wall -Wextra -Werror -fsanitize=address -g3
+CFLAGS = -Wall -Wextra -Werror #-fsanitize=address -g3
 
 INCLUDE = -Iinclude
 
@@ -27,7 +27,8 @@ SRC_DIR = src
 
 SRC_FILES =	main	\
 			init	\
-			parse
+			parse	\
+			philosophers
 
 SRC = $(addprefix $(SRC_DIR)/, $(addsuffix .c, $(SRC_FILES)))
 
