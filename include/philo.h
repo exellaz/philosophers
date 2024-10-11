@@ -6,7 +6,7 @@
 /*   By: kkhai-ki <kkhai-ki@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 16:06:42 by kkhai-ki          #+#    #+#             */
-/*   Updated: 2024/10/11 14:48:08 by kkhai-ki         ###   ########.fr       */
+/*   Updated: 2024/10/11 15:35:32 by kkhai-ki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,8 @@
 
 # define PHILO_MAX 200
 
+typedef struct s_table t_table;
+
 typedef struct s_philo
 {
 	pthread_t		thread;
@@ -32,6 +34,7 @@ typedef struct s_philo
 	int				fork[2];
 	pthread_mutex_t	meal_time_lock;
 	time_t			last_meal;
+	t_table			*table;
 }	t_philo;
 
 typedef struct s_table
