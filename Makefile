@@ -6,7 +6,7 @@
 #    By: kkhai-ki <kkhai-ki@student.42kl.edu.my>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/09 16:06:48 by kkhai-ki          #+#    #+#              #
-#    Updated: 2024/10/11 23:54:05 by kkhai-ki         ###   ########.fr        #
+#    Updated: 2024/10/13 13:59:42 by kkhai-ki         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,7 +28,8 @@ SRC_DIR = src
 SRC_FILES =	main	\
 			init	\
 			parse	\
-			philosophers
+			philosophers	\
+			monitor
 
 SRC = $(addprefix $(SRC_DIR)/, $(addsuffix .c, $(SRC_FILES)))
 

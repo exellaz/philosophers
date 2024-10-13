@@ -6,7 +6,7 @@
 /*   By: kkhai-ki <kkhai-ki@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 15:51:02 by kkhai-ki          #+#    #+#             */
-/*   Updated: 2024/10/11 16:12:30 by kkhai-ki         ###   ########.fr       */
+/*   Updated: 2024/10/13 14:09:43 by kkhai-ki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,5 +22,20 @@ int	main(int ac, char *av[])
 		return (EXIT_FAILURE);
 	init_table(&table, ac, av);
 	start_sim(&table);
+	end_sim(&table);
 	exit(0);
+}
+
+void	end_sim(t_table *table)
+{
+	int	i;
+
+	i = 0;
+	while (i < table->nb_philo)
+	{
+		pthread_join(table->philos[i].thread, NULL);
+		i++;
+	}
+	if (table->nb_philo > 1)
+		pthread_join(table->death_monitor, NULL);
 }
