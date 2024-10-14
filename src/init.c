@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kkhai-ki <kkhai-ki@student.42kl.edu.my>    +#+  +:+       +#+        */
+/*   By: kkhai-ki <kkhai-ki@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/11 13:06:01 by kkhai-ki          #+#    #+#             */
-/*   Updated: 2024/10/11 15:58:25 by kkhai-ki         ###   ########.fr       */
+/*   Updated: 2024/10/14 17:07:26 by kkhai-ki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,16 +43,8 @@ int	init_all_mutexes(t_table *table)
 
 void	assign_forks(t_philo *philo, int nb_philo)
 {
-	if (philo->id % 2)
-	{
-		philo->fork[0] = (philo->id + 1) % nb_philo;
-		philo->fork[1] = philo->id;
-	}
-	else
-	{
-		philo->fork[0] = philo->id;
-		philo->fork[1] = (philo->id + 1) % nb_philo;
-	}
+	philo->fork[0] = philo->id;
+	philo->fork[1] = (philo->id + 1) % nb_philo;
 }
 
 int	init_philo(t_table *table, t_philo **philos)
@@ -94,4 +86,3 @@ void	init_table(t_table *table, int ac, char **av)
 	if (init_philo(table, &table->philos) != 0)
 		return ; //ERROR HANDLING
 }
-

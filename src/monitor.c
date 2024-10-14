@@ -6,7 +6,7 @@
 /*   By: kkhai-ki <kkhai-ki@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/13 13:22:16 by kkhai-ki          #+#    #+#             */
-/*   Updated: 2024/10/13 16:12:28 by kkhai-ki         ###   ########.fr       */
+/*   Updated: 2024/10/14 15:37:37 by kkhai-ki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ void	*death_monitor(void *data)
 	{
 		if (end_condition(table) == true)
 			return (NULL);
-		usleep(1000);
+		usleep(5000);
 	}
 	return (NULL);
 }
