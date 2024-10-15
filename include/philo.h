@@ -6,7 +6,7 @@
 /*   By: kkhai-ki <kkhai-ki@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 16:06:42 by kkhai-ki          #+#    #+#             */
-/*   Updated: 2024/10/13 16:12:35 by kkhai-ki         ###   ########.fr       */
+/*   Updated: 2024/10/15 13:22:07 by kkhai-ki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ typedef struct s_philo
 	pthread_t		thread;
 	int				id;
 	int				eat_count;
-	int				fork[2];
+	pthread_mutex_t	*fork[2];
 	pthread_mutex_t	meal_time_lock;
 	time_t			last_meal;
 	t_table			*table;

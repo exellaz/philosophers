@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: kkhai-ki <kkhai-ki@student.42.fr>          +#+  +:+       +#+        */
+/*   By: kkhai-ki <kkhai-ki@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/11 13:06:01 by kkhai-ki          #+#    #+#             */
-/*   Updated: 2024/10/14 17:07:26 by kkhai-ki         ###   ########.fr       */
+/*   Updated: 2024/10/15 13:21:53 by kkhai-ki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,10 +41,12 @@ int	init_all_mutexes(t_table *table)
 	return (0);
 }
 
-void	assign_forks(t_philo *philo, int nb_philo)
+void	assign_forks(t_philo *philo, t_table *table, int nb_philo)
 {
-	philo->fork[0] = philo->id;
-	philo->fork[1] = (philo->id + 1) % nb_philo;
+	philo->fork[0] = &table->forks[philo->id];
+	philo->fork[1] = &table->forks[(philo->id + 1) % nb_philo];
+	// philo->fork[0] = philo->id;
+	// philo->fork[1] = (philo->id + 1) % nb_philo;
 }
 
 int	init_philo(t_table *table, t_philo **philos)
@@ -62,7 +64,7 @@ int	init_philo(t_table *table, t_philo **philos)
 		(*philos)[i].id = i;
 		(*philos)[i].eat_count = 0;
 		(*philos)[i].table = table;
-		assign_forks(&(*philos)[i], table->nb_philo);
+		assign_forks(&(*philos)[i], table, table->nb_philo);
 		i++;
 	}
 	return (0);
