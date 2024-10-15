@@ -6,7 +6,7 @@
 /*   By: kkhai-ki <kkhai-ki@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/11 15:24:32 by kkhai-ki          #+#    #+#             */
-/*   Updated: 2024/10/15 15:12:31 by kkhai-ki         ###   ########.fr       */
+/*   Updated: 2024/10/15 15:39:27 by kkhai-ki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,9 +75,9 @@ void	*single_philo_routine(t_philo *philo)
 void	eat_sleep_routine(t_philo *philo)
 {
 	pthread_mutex_lock(philo->fork[0]);
-	print_status(philo, "has taken a fork0", false);
+	print_status(philo, "has taken a fork", false);
 	pthread_mutex_lock(philo->fork[1]);
-	print_status(philo, "has taken a fork1", false);
+	print_status(philo, "has taken a fork", false);
 	print_status(philo, "is eating", false);
 	philo->last_meal = get_time_in_ms();
 	philo_sleep(philo->table, philo->table->time_to_eat);
@@ -87,22 +87,7 @@ void	eat_sleep_routine(t_philo *philo)
 	pthread_mutex_unlock(philo->fork[1]);
 	pthread_mutex_unlock(philo->fork[0]);
 	philo_sleep(philo->table, philo->table->time_to_sleep);
-}
-
-void	think_routine(t_philo *philo, bool initial)
-{
-	// time_t	time_to_think;
-
-	// time_to_think = 0;
-	// if (philo->table->nb_philo % 2 != 0)
-	// 	time_to_think = (philo->table->time_to_die - (philo->table->time_to_eat + philo->table->time_to_sleep)) / 2;
-	// if (time_to_think < 0)
-	// 	time_to_think = 0;
-	// // if (time_to_think > 200)
-	// // 	time_to_think = 200;
-	if (initial == false)
-		print_status(philo, "is thinking", false);
-	// philo_sleep(philo->table, time_to_think);
+	print_status(philo, "is thinking", false);
 }
 
 void	print_status(t_philo *philo, char *str, bool death_status)
@@ -138,9 +123,7 @@ void	*philosopher(void *data)
 		// think_routine(philo, true);
 		usleep(5000);
 	while (sim_stopped(philo->table) == false)
-	{
 		eat_sleep_routine(philo);
-		think_routine(philo, false);
-	}
+		// think_routine(philo, false);
 	return (NULL);
 }
