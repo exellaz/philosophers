@@ -6,7 +6,7 @@
 /*   By: kkhai-ki <kkhai-ki@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 15:51:02 by kkhai-ki          #+#    #+#             */
-/*   Updated: 2024/10/13 14:09:43 by kkhai-ki         ###   ########.fr       */
+/*   Updated: 2024/10/16 11:09:34 by kkhai-ki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	main(int ac, char *av[])
 	if (ac < 5 || ac > 6)
 		return (printf("Incorrect number of arguments\n") ,1);
 	if (!is_valid_input(ac, av))
-		return (EXIT_FAILURE);
+		return (printf("Arguments should only consists of digits\n"), 1);
 	init_table(&table, ac, av);
 	start_sim(&table);
 	end_sim(&table);

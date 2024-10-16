@@ -6,7 +6,7 @@
 /*   By: kkhai-ki <kkhai-ki@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/11 13:06:01 by kkhai-ki          #+#    #+#             */
-/*   Updated: 2024/10/16 09:39:07 by kkhai-ki         ###   ########.fr       */
+/*   Updated: 2024/10/16 11:41:25 by kkhai-ki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,11 +19,11 @@ pthread_mutex_t	*init_forks(t_table *table)
 
 	forks = malloc(sizeof(pthread_mutex_t) * table->nb_philo);
 	if (!forks)
-		return (NULL);
+		return (printf("Could not allocate memory\n"), NULL);
 	while (i < table->nb_philo)
 	{
 		if (pthread_mutex_init(&forks[i], NULL) != 0)
-			return (NULL);
+			return (printf("Could not create mutex\n"), NULL);
 		i++;
 	}
 	return (forks);
@@ -35,9 +35,9 @@ int	init_all_mutexes(t_table *table)
 	if (!table->forks)
 		return (1);
 	if (pthread_mutex_init(&table->sim_end_lock, NULL) != 0)
-		return (1);
+		return (printf("Could not create mutex\n"), 1);
 	if (pthread_mutex_init(&table->write_lock, NULL) != 0)
-		return (1);
+		return (printf("Could not create mutex\n"), 1);
 	return (0);
 }
 
@@ -45,8 +45,6 @@ void	assign_forks(t_philo *philo, t_table *table, int nb_philo)
 {
 	philo->fork[0] = &table->forks[philo->id];
 	philo->fork[1] = &table->forks[(philo->id + 1) % nb_philo];
-	// philo->fork[0] = philo->id;
-	// philo->fork[1] = (philo->id + 1) % nb_philo;
 }
 
 int	init_philo(t_table *table, t_philo **philos)
@@ -60,7 +58,7 @@ int	init_philo(t_table *table, t_philo **philos)
 	while (i < table->nb_philo)
 	{
 		if (pthread_mutex_init(&(*philos)[i].meal_time_lock, NULL) != 0)
-			return (1);
+			return (printf("Could not create mutex\n"), 1);
 		(*philos)[i].id = i;
 		(*philos)[i].eat_count = 0;
 		(*philos)[i].table = table;
@@ -84,7 +82,7 @@ void	init_table(t_table *table, int ac, char **av)
 	if (ac == 6)
 		table->must_eat_count = philo_atoi(av[i++]);
 	if (init_all_mutexes(table) != 0)
-		return ; //ERROR HANDLING
+		return ;
 	if (init_philo(table, &table->philos) != 0)
-		return ; //ERROR HANDLING
+		return ;
 }

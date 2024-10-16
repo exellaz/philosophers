@@ -6,7 +6,7 @@
 /*   By: kkhai-ki <kkhai-ki@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/11 15:24:32 by kkhai-ki          #+#    #+#             */
-/*   Updated: 2024/10/16 10:54:47 by kkhai-ki         ###   ########.fr       */
+/*   Updated: 2024/10/16 11:18:14 by kkhai-ki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -123,6 +123,7 @@ void	*philosopher(void *data)
 	else if (philo->id % 2)
 		// think_routine(philo, true);
 		usleep(5000);
+		// usleep(philo->table->time_to_eat * 500);
 	while (sim_stopped(philo->table) == false)
 		eat_sleep_think(philo);
 		// think_routine(philo, false);
