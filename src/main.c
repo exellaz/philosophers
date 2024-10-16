@@ -6,7 +6,7 @@
 /*   By: kkhai-ki <kkhai-ki@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 15:51:02 by kkhai-ki          #+#    #+#             */
-/*   Updated: 2024/10/16 12:16:16 by kkhai-ki         ###   ########.fr       */
+/*   Updated: 2024/10/16 12:27:34 by kkhai-ki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,11 +21,11 @@ int	main(int ac, char *av[])
 	if (!is_valid_input(ac, av))
 		return (1);
 	if (init_table(&table, ac, av) != 0)
-		exit(EXIT_FAILURE);
+		return (1);
 	if (start_sim(&table) != 0)
-		exit(EXIT_FAILURE);
+		return (1);
 	end_sim(&table);
-	exit(0);
+	return (0);
 }
 
 void	end_sim(t_table *table)
