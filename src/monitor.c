@@ -6,7 +6,7 @@
 /*   By: kkhai-ki <kkhai-ki@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/13 13:22:16 by kkhai-ki          #+#    #+#             */
-/*   Updated: 2024/10/14 15:37:37 by kkhai-ki         ###   ########.fr       */
+/*   Updated: 2024/10/16 10:13:55 by kkhai-ki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ bool	sim_stopped(t_table *table)
 	return (end);
 }
 
-void	set_sim_status(t_table *table, bool status)
+void	set_end_status(t_table *table, bool status)
 {
 	pthread_mutex_lock(&table->sim_end_lock);
 	table->sim_end = status;
@@ -33,12 +33,12 @@ void	set_sim_status(t_table *table, bool status)
 
 bool	kill_philo(t_philo *philo)
 {
-	time_t	time;
+	time_t	current_time;
 
-	time = get_time_in_ms();
-	if ((time - philo->last_meal) >= philo->table->time_to_die)
+	current_time = get_time_in_ms();
+	if ((current_time - philo->last_meal) >= philo->table->time_to_die)
 	{
-		set_sim_status(philo->table, true);
+		set_end_status(philo->table, true);
 		print_status(philo, "died", true);
 		pthread_mutex_unlock(&philo->meal_time_lock);
 		return (true);
@@ -49,17 +49,22 @@ bool	kill_philo(t_philo *philo)
 bool	end_condition(t_table *table)
 {
 	int		i;
+	bool	all_ate_enough;
 
 	i = 0;
+	all_ate_enough = true;
 	while (i < table->nb_philo)
 	{
 		pthread_mutex_lock(&table->philos[i].meal_time_lock);
 		if (kill_philo(&table->philos[i]) == true)
 			return (true);
-		// if (table->min_eat_count != -1 && table->philos[i]->times->ate < table->min_eat_count)
+		if (table->must_eat_count != -1 && table->philos[i].eat_count < table->must_eat_count)
+			all_ate_enough = false;
 		pthread_mutex_unlock(&table->philos[i].meal_time_lock);
 		i++;
 	}
+	if (table->must_eat_count != -1 && all_ate_enough == true)
+		return (set_end_status(table, true), true);
 	return (false);
 }
 
@@ -68,16 +73,16 @@ void	*death_monitor(void *data)
 	t_table	*table;
 
 	table = (t_table *)data;
-	if (table->min_eat_count == 0)
+	if (table->must_eat_count == 0)
 		return (NULL);
-	set_sim_status(table, false);
+	set_end_status(table, false);
 	while (get_time_in_ms() < table->start_time)
 		continue ;
 	while (1)
 	{
 		if (end_condition(table) == true)
 			return (NULL);
-		usleep(5000);
+		usleep(100);
 	}
 	return (NULL);
 }

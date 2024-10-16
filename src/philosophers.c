@@ -6,7 +6,7 @@
 /*   By: kkhai-ki <kkhai-ki@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/11 15:24:32 by kkhai-ki          #+#    #+#             */
-/*   Updated: 2024/10/15 15:39:27 by kkhai-ki         ###   ########.fr       */
+/*   Updated: 2024/10/16 10:03:58 by kkhai-ki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,9 @@ void	eat_sleep_routine(t_philo *philo)
 	pthread_mutex_lock(philo->fork[1]);
 	print_status(philo, "has taken a fork", false);
 	print_status(philo, "is eating", false);
+	pthread_mutex_lock(&philo->meal_time_lock);
 	philo->last_meal = get_time_in_ms();
+	pthread_mutex_unlock(&philo->meal_time_lock);
 	philo_sleep(philo->table, philo->table->time_to_eat);
 	if (sim_stopped(philo->table) == false)
 		philo->eat_count++;
@@ -92,7 +94,6 @@ void	eat_sleep_routine(t_philo *philo)
 
 void	print_status(t_philo *philo, char *str, bool death_status)
 {
-	(void)death_status;
 	pthread_mutex_lock(&philo->table->write_lock);
 	if (sim_stopped(philo->table) == true && death_status == false)
 	{
@@ -109,7 +110,7 @@ void	*philosopher(void *data)
 	t_philo	*philo;
 
 	philo = (t_philo *)data;
-	if (philo->table->min_eat_count == 0)
+	if (philo->table->must_eat_count == 0)
 		return (NULL);
 	pthread_mutex_lock(&philo->meal_time_lock);
 	philo->last_meal = philo->table->start_time;

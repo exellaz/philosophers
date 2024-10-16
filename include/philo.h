@@ -6,7 +6,7 @@
 /*   By: kkhai-ki <kkhai-ki@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 16:06:42 by kkhai-ki          #+#    #+#             */
-/*   Updated: 2024/10/15 13:22:07 by kkhai-ki         ###   ########.fr       */
+/*   Updated: 2024/10/16 10:14:06 by kkhai-ki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ typedef struct s_table
 	time_t			time_to_die;
 	time_t			time_to_eat;
 	time_t			time_to_sleep;
-	int				min_eat_count;
+	int				must_eat_count;
 	bool			sim_end;
 	pthread_mutex_t	*forks;
 	pthread_mutex_t	sim_end_lock;
@@ -74,7 +74,7 @@ void	think_routine(t_philo *philo, bool initial);
 void	eat_sleep_routine(t_philo *philo);
 
 bool	sim_stopped(t_table *table);
-void	set_sim_status(t_table *table, bool status);
+void	set_end_status(t_table *table, bool status);
 bool	kill_philo(t_philo *philo);
 bool	end_condition(t_table *table);
 void	*death_monitor(void *data);
