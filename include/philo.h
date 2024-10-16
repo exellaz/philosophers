@@ -6,7 +6,7 @@
 /*   By: kkhai-ki <kkhai-ki@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 16:06:42 by kkhai-ki          #+#    #+#             */
-/*   Updated: 2024/10/16 12:10:54 by kkhai-ki         ###   ########.fr       */
+/*   Updated: 2024/10/16 13:11:16 by kkhai-ki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@
 
 # define PHILO_MAX 200
 
-typedef struct s_table t_table;
+typedef struct s_table	t_table;
 
 typedef struct s_philo
 {
@@ -53,29 +53,29 @@ typedef struct s_table
 	t_philo			*philos;
 }	t_table;
 
-bool	ft_isdigit(char c);
-bool	is_only_digits(char *str);
+/*Parsing*/
+
 int		philo_atoi(char *str);
 bool	is_valid_input(int ac, char **av);
 
+/*Init*/
+
 int		init_table(t_table *table, int ac, char **av);
+
+/*Simulation*/
 
 int		start_sim(t_table *table);
 void	end_sim(t_table *table);
-time_t	get_time_in_ms(void);
-void	sim_start_wait(time_t start_time);
-
-
-void	*single_philo_routine(t_philo *philo);
-void	print_status(t_philo *philo, char *str, bool death_status);
-void	*philosopher(void *data);
-
-void	eat_sleep_think(t_philo *philo);
-
 bool	sim_stopped(t_table *table);
-void	set_end_status(t_table *table, bool status);
-bool	kill_philo(t_philo *philo);
-bool	end_condition(t_table *table);
+
+/*Utils*/
+
+time_t	get_time_in_ms(void);
+void	print_status(t_philo *philo, char *str, bool death_status);
+
+/*Routines*/
+
+void	*philosopher(void *data);
 void	*death_monitor(void *data);
 
 #endif

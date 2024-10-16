@@ -6,16 +6,16 @@
 /*   By: kkhai-ki <kkhai-ki@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/11 13:06:01 by kkhai-ki          #+#    #+#             */
-/*   Updated: 2024/10/16 12:10:34 by kkhai-ki         ###   ########.fr       */
+/*   Updated: 2024/10/16 12:36:45 by kkhai-ki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-pthread_mutex_t	*init_forks(t_table *table)
+static pthread_mutex_t	*init_forks(t_table *table)
 {
 	pthread_mutex_t	*forks;
-	int	i;
+	int				i;
 
 	forks = malloc(sizeof(pthread_mutex_t) * table->nb_philo);
 	if (!forks)
@@ -29,25 +29,7 @@ pthread_mutex_t	*init_forks(t_table *table)
 	return (forks);
 }
 
-int	init_all_mutexes(t_table *table)
-{
-	table->forks = init_forks(table);
-	if (!table->forks)
-		return (1);
-	if (pthread_mutex_init(&table->sim_end_lock, NULL) != 0)
-		return (printf("Could not create mutex\n"), 1);
-	if (pthread_mutex_init(&table->write_lock, NULL) != 0)
-		return (printf("Could not create mutex\n"), 1);
-	return (0);
-}
-
-void	assign_forks(t_philo *philo, t_table *table, int nb_philo)
-{
-	philo->fork[0] = &table->forks[philo->id];
-	philo->fork[1] = &table->forks[(philo->id + 1) % nb_philo];
-}
-
-int	init_philo(t_table *table, t_philo **philos)
+static int	init_philo(t_table *table, t_philo **philos)
 {
 	int	i;
 
@@ -62,9 +44,22 @@ int	init_philo(t_table *table, t_philo **philos)
 		(*philos)[i].id = i;
 		(*philos)[i].eat_count = 0;
 		(*philos)[i].table = table;
-		assign_forks(&(*philos)[i], table, table->nb_philo);
+		(*philos)[i].fork[0] = &table->forks[i];
+		(*philos)[i].fork[1] = &table->forks[(i + 1) % table->nb_philo];
 		i++;
 	}
+	return (0);
+}
+
+static int	init_all_mutexes(t_table *table)
+{
+	table->forks = init_forks(table);
+	if (!table->forks)
+		return (1);
+	if (pthread_mutex_init(&table->sim_end_lock, NULL) != 0)
+		return (printf("Could not create mutex\n"), 1);
+	if (pthread_mutex_init(&table->write_lock, NULL) != 0)
+		return (printf("Could not create mutex\n"), 1);
 	return (0);
 }
 

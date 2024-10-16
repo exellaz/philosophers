@@ -6,32 +6,20 @@
 /*   By: kkhai-ki <kkhai-ki@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/13 13:22:16 by kkhai-ki          #+#    #+#             */
-/*   Updated: 2024/10/16 10:13:55 by kkhai-ki         ###   ########.fr       */
+/*   Updated: 2024/10/16 13:10:43 by kkhai-ki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-bool	sim_stopped(t_table *table)
-{
-	bool	end;
-
-	end = false;
-	pthread_mutex_lock(&table->sim_end_lock);
-	if (table->sim_end == true)
-		end = true;
-	pthread_mutex_unlock(&table->sim_end_lock);
-	return (end);
-}
-
-void	set_end_status(t_table *table, bool status)
+static void	set_end_status(t_table *table, bool status)
 {
 	pthread_mutex_lock(&table->sim_end_lock);
 	table->sim_end = status;
 	pthread_mutex_unlock(&table->sim_end_lock);
 }
 
-bool	kill_philo(t_philo *philo)
+static bool	kill_philo(t_philo *philo)
 {
 	time_t	current_time;
 
@@ -46,7 +34,7 @@ bool	kill_philo(t_philo *philo)
 	return (false);
 }
 
-bool	end_condition(t_table *table)
+static bool	end_condition(t_table *table)
 {
 	int		i;
 	bool	all_ate_enough;
@@ -58,7 +46,8 @@ bool	end_condition(t_table *table)
 		pthread_mutex_lock(&table->philos[i].meal_time_lock);
 		if (kill_philo(&table->philos[i]) == true)
 			return (true);
-		if (table->must_eat_count != -1 && table->philos[i].eat_count < table->must_eat_count)
+		if (table->must_eat_count != -1
+			&& table->philos[i].eat_count < table->must_eat_count)
 			all_ate_enough = false;
 		pthread_mutex_unlock(&table->philos[i].meal_time_lock);
 		i++;
@@ -66,6 +55,18 @@ bool	end_condition(t_table *table)
 	if (table->must_eat_count != -1 && all_ate_enough == true)
 		return (set_end_status(table, true), true);
 	return (false);
+}
+
+bool	sim_stopped(t_table *table)
+{
+	bool	end;
+
+	end = false;
+	pthread_mutex_lock(&table->sim_end_lock);
+	if (table->sim_end == true)
+		end = true;
+	pthread_mutex_unlock(&table->sim_end_lock);
+	return (end);
 }
 
 void	*death_monitor(void *data)

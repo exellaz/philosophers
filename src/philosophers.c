@@ -6,51 +6,22 @@
 /*   By: kkhai-ki <kkhai-ki@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/11 15:24:32 by kkhai-ki          #+#    #+#             */
-/*   Updated: 2024/10/16 12:09:21 by kkhai-ki         ###   ########.fr       */
+/*   Updated: 2024/10/16 12:46:43 by kkhai-ki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo.h"
 
-int	start_sim(t_table *table)
-{
-	int	i;
-
-	table->start_time = get_time_in_ms() + (table->nb_philo * 20);
-	i = 0;
-	while (i < table->nb_philo)
-	{
-		if(pthread_create(&table->philos[i].thread, NULL, &philosopher, &table->philos[i]) != 0)
-			return (printf("Could not create thread\n"), 1);
-		i++;
-	}
-	if (table->nb_philo > 1)
-	{
-		if (pthread_create(&table->death_monitor, NULL, &death_monitor, table))
-			return (printf("Could not create thread\n"), 1);
-	}
-	return (0);
-}
-
-time_t	get_time_in_ms(void)
-{
-	struct timeval		time;
-
-	gettimeofday(&time, NULL);
-	return ((time.tv_sec * 1000) + (time.tv_usec / 1000));
-}
-
-void	sim_start_wait(time_t start_time)
+static void	sim_start_wait(time_t start_time)
 {
 	while (get_time_in_ms() < start_time)
 		continue ;
 }
 
-void	philo_sleep(t_table *table, time_t sleep_time)
+static void	philo_sleep(t_table *table, time_t sleep_time)
 {
 	time_t	wake_up;
 
-	(void)table;
 	wake_up = get_time_in_ms() + sleep_time;
 	while (get_time_in_ms() < wake_up)
 	{
@@ -60,7 +31,7 @@ void	philo_sleep(t_table *table, time_t sleep_time)
 	}
 }
 
-void	*single_philo_routine(t_philo *philo)
+static void	*single_philo_routine(t_philo *philo)
 {
 	pthread_mutex_lock(philo->fork[0]);
 	print_status(philo, "has taken a fork", false);
@@ -70,7 +41,7 @@ void	*single_philo_routine(t_philo *philo)
 	return (NULL);
 }
 
-void	eat_sleep_think(t_philo *philo)
+static void	eat_sleep_think(t_philo *philo)
 {
 	pthread_mutex_lock(philo->fork[0]);
 	print_status(philo, "has taken a fork", false);
@@ -90,19 +61,6 @@ void	eat_sleep_think(t_philo *philo)
 	print_status(philo, "is thinking", false);
 }
 
-void	print_status(t_philo *philo, char *str, bool death_status)
-{
-	pthread_mutex_lock(&philo->table->write_lock);
-	if (sim_stopped(philo->table) == true && death_status == false)
-	{
-		pthread_mutex_unlock(&philo->table->write_lock);
-		return ;
-	}
-	printf("%ld %d %s\n", get_time_in_ms() - philo->table->start_time,
-		philo->id + 1, str);
-	pthread_mutex_unlock(&philo->table->write_lock);
-}
-
 void	*philosopher(void *data)
 {
 	t_philo	*philo;
@@ -119,11 +77,8 @@ void	*philosopher(void *data)
 	if (philo->table->nb_philo == 1)
 		return (single_philo_routine(philo));
 	else if (philo->id % 2)
-		// think_routine(philo, true);
 		usleep(5000);
-		// usleep(philo->table->time_to_eat * 500);
 	while (sim_stopped(philo->table) == false)
 		eat_sleep_think(philo);
-		// think_routine(philo, false);
 	return (NULL);
 }
