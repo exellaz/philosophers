@@ -6,7 +6,7 @@
 /*   By: kkhai-ki <kkhai-ki@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/11 15:24:32 by kkhai-ki          #+#    #+#             */
-/*   Updated: 2024/10/16 12:46:43 by kkhai-ki         ###   ########.fr       */
+/*   Updated: 2024/10/16 15:18:57 by kkhai-ki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,12 +48,12 @@ static void	eat_sleep_think(t_philo *philo)
 	pthread_mutex_lock(philo->fork[1]);
 	print_status(philo, "has taken a fork", false);
 	print_status(philo, "is eating", false);
+	philo_sleep(philo->table, philo->table->time_to_eat);
 	pthread_mutex_lock(&philo->meal_time_lock);
 	philo->last_meal = get_time_in_ms();
-	pthread_mutex_unlock(&philo->meal_time_lock);
-	philo_sleep(philo->table, philo->table->time_to_eat);
 	if (sim_stopped(philo->table) == false)
 		philo->eat_count++;
+	pthread_mutex_unlock(&philo->meal_time_lock);
 	print_status(philo, "is sleeping", false);
 	pthread_mutex_unlock(philo->fork[1]);
 	pthread_mutex_unlock(philo->fork[0]);
