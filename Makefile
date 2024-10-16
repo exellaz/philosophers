@@ -6,7 +6,7 @@
 #    By: kkhai-ki <kkhai-ki@student.42kl.edu.my>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/09 16:06:48 by kkhai-ki          #+#    #+#              #
-#    Updated: 2024/10/15 13:24:52 by kkhai-ki         ###   ########.fr        #
+#    Updated: 2024/10/16 12:22:43 by kkhai-ki         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -45,7 +45,7 @@ $(OBJ_DIR)/%.o:		$(SRC_DIR)/%.c
 
 $(NAME) :	$(OBJ)
 			@printf "$(GREEN)philo object files created.$(RESET)\n"
-			@$(CC) $(CFLAGS) $(OBJ) -o $(NAME) $(LIBRARIES) && echo "$(GREEN)philo created.$(RESET)"
+			@$(CC) $(CFLAGS) $(OBJ) -o $(NAME) && echo "$(GREEN)philo created.$(RESET)"
 
 clean :
 			@rm -rf $(OBJ_DIR) && echo "$(RED)philo object files deleted.$(RESET)"

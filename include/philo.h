@@ -6,7 +6,7 @@
 /*   By: kkhai-ki <kkhai-ki@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 16:06:42 by kkhai-ki          #+#    #+#             */
-/*   Updated: 2024/10/16 10:54:56 by kkhai-ki         ###   ########.fr       */
+/*   Updated: 2024/10/16 12:10:54 by kkhai-ki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ bool	is_only_digits(char *str);
 int		philo_atoi(char *str);
 bool	is_valid_input(int ac, char **av);
 
-void	init_table(t_table *table, int ac, char **av);
+int		init_table(t_table *table, int ac, char **av);
 
 int		start_sim(t_table *table);
 void	end_sim(t_table *table);

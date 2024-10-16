@@ -6,7 +6,7 @@
 /*   By: kkhai-ki <kkhai-ki@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/11 13:06:01 by kkhai-ki          #+#    #+#             */
-/*   Updated: 2024/10/16 11:41:25 by kkhai-ki         ###   ########.fr       */
+/*   Updated: 2024/10/16 12:10:34 by kkhai-ki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ int	init_philo(t_table *table, t_philo **philos)
 
 	*philos = malloc(sizeof(t_philo) * table->nb_philo);
 	if (!philos)
-		return (1); //ERROR HANDLING
+		return (printf("Could not allocate memory\n"), 1);
 	i = 0;
 	while (i < table->nb_philo)
 	{
@@ -68,7 +68,7 @@ int	init_philo(t_table *table, t_philo **philos)
 	return (0);
 }
 
-void	init_table(t_table *table, int ac, char **av)
+int	init_table(t_table *table, int ac, char **av)
 {
 	int	i;
 
@@ -82,7 +82,8 @@ void	init_table(t_table *table, int ac, char **av)
 	if (ac == 6)
 		table->must_eat_count = philo_atoi(av[i++]);
 	if (init_all_mutexes(table) != 0)
-		return ;
+		return (1);
 	if (init_philo(table, &table->philos) != 0)
-		return ;
+		return (1);
+	return (0);
 }

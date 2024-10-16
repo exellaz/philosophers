@@ -6,7 +6,7 @@
 /*   By: kkhai-ki <kkhai-ki@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 18:39:38 by kkhai-ki          #+#    #+#             */
-/*   Updated: 2024/10/09 20:03:00 by kkhai-ki         ###   ########.fr       */
+/*   Updated: 2024/10/16 12:17:27 by kkhai-ki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ bool	ft_isdigit(char c)
 
 bool	is_only_digits(char *str)
 {
-	if (!str)
+	if (!str || !*str)
 		return (false);
 	while (*str)
 	{
@@ -58,12 +58,12 @@ bool	is_valid_input(int ac, char **av)
 	while (++i < ac)
 	{
 		if (!is_only_digits(av[i]))
-			return (false);
+			return (printf("Arguments should only consist of digits\n"), false);
 		nbr = philo_atoi(av[i]);
 		if (i == 1 && (nbr <= 0 || nbr > PHILO_MAX))
-			return (false);
+			return (printf("Number of philosophers should be a number between 1 and 200\n"), false);
 		if (i != 1 && nbr == -1)
-			return (false);
+			return (printf("Invalid argument\n"), false);
 	}
 	return (true);
 }

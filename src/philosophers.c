@@ -6,7 +6,7 @@
 /*   By: kkhai-ki <kkhai-ki@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/11 15:24:32 by kkhai-ki          #+#    #+#             */
-/*   Updated: 2024/10/16 11:18:14 by kkhai-ki         ###   ########.fr       */
+/*   Updated: 2024/10/16 12:09:21 by kkhai-ki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,16 +21,14 @@ int	start_sim(t_table *table)
 	while (i < table->nb_philo)
 	{
 		if(pthread_create(&table->philos[i].thread, NULL, &philosopher, &table->philos[i]) != 0)
-			return (1);
+			return (printf("Could not create thread\n"), 1);
 		i++;
 	}
 	if (table->nb_philo > 1)
 	{
 		if (pthread_create(&table->death_monitor, NULL, &death_monitor, table))
-			return (1);
+			return (printf("Could not create thread\n"), 1);
 	}
-		// printf("nb_philo: (%d)\n", table->nb_philo);
-	// pthread_join(table->philos[i - 1].thread, NULL);
 	return (0);
 }
 
