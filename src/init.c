@@ -6,7 +6,7 @@
 /*   By: kkhai-ki <kkhai-ki@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/11 13:06:01 by kkhai-ki          #+#    #+#             */
-/*   Updated: 2024/10/16 12:36:45 by kkhai-ki         ###   ########.fr       */
+/*   Updated: 2024/10/16 13:48:09 by kkhai-ki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ static pthread_mutex_t	*init_forks(t_table *table)
 	pthread_mutex_t	*forks;
 	int				i;
 
+	i = 0;
 	forks = malloc(sizeof(pthread_mutex_t) * table->nb_philo);
 	if (!forks)
 		return (printf("Could not allocate memory\n"), NULL);

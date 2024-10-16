@@ -6,7 +6,7 @@
 /*   By: kkhai-ki <kkhai-ki@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/16 12:40:45 by kkhai-ki          #+#    #+#             */
-/*   Updated: 2024/10/16 13:06:30 by kkhai-ki         ###   ########.fr       */
+/*   Updated: 2024/10/16 13:43:04 by kkhai-ki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,4 +31,30 @@ void	print_status(t_philo *philo, char *str, bool death_status)
 	printf("%ld %d %s\n", get_time_in_ms() - philo->table->start_time,
 		philo->id + 1, str);
 	pthread_mutex_unlock(&philo->table->write_lock);
+}
+
+void	free_table(t_table *table)
+{
+	if (!table)
+		return ;
+	if (table->forks != NULL)
+		free(table->forks);
+	if (table->philos != NULL)
+		free(table->philos);
+	table = NULL;
+}
+
+void	destroy_mutexes(t_table *table)
+{
+	int	i;
+
+	i = 0;
+	while (i < table->nb_philo)
+	{
+		pthread_mutex_destroy(&table->forks[i]);
+		pthread_mutex_destroy(&table->philos[i].meal_time_lock);
+		i++;
+	}
+	pthread_mutex_destroy(&table->write_lock);
+	pthread_mutex_destroy(&table->sim_end_lock);
 }

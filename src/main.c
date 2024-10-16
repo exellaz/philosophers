@@ -6,7 +6,7 @@
 /*   By: kkhai-ki <kkhai-ki@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 15:51:02 by kkhai-ki          #+#    #+#             */
-/*   Updated: 2024/10/16 12:46:28 by kkhai-ki         ###   ########.fr       */
+/*   Updated: 2024/10/16 13:42:44 by kkhai-ki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,4 +61,6 @@ void	end_sim(t_table *table)
 	}
 	if (table->nb_philo > 1)
 		pthread_join(table->death_monitor, NULL);
+	destroy_mutexes(table);
+	free_table(table);
 }

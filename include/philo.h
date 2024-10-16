@@ -6,7 +6,7 @@
 /*   By: kkhai-ki <kkhai-ki@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 16:06:42 by kkhai-ki          #+#    #+#             */
-/*   Updated: 2024/10/16 13:11:16 by kkhai-ki         ###   ########.fr       */
+/*   Updated: 2024/10/16 13:41:44 by kkhai-ki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,8 @@ bool	sim_stopped(t_table *table);
 
 time_t	get_time_in_ms(void);
 void	print_status(t_philo *philo, char *str, bool death_status);
+void	free_table(t_table *table);
+void	destroy_mutexes(t_table *table);
 
 /*Routines*/
 
