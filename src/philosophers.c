@@ -6,7 +6,7 @@
 /*   By: kkhai-ki <kkhai-ki@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/11 15:24:32 by kkhai-ki          #+#    #+#             */
-/*   Updated: 2024/10/16 10:03:58 by kkhai-ki         ###   ########.fr       */
+/*   Updated: 2024/10/16 10:54:47 by kkhai-ki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ void	*single_philo_routine(t_philo *philo)
 	return (NULL);
 }
 
-void	eat_sleep_routine(t_philo *philo)
+void	eat_sleep_think(t_philo *philo)
 {
 	pthread_mutex_lock(philo->fork[0]);
 	print_status(philo, "has taken a fork", false);
@@ -124,7 +124,7 @@ void	*philosopher(void *data)
 		// think_routine(philo, true);
 		usleep(5000);
 	while (sim_stopped(philo->table) == false)
-		eat_sleep_routine(philo);
+		eat_sleep_think(philo);
 		// think_routine(philo, false);
 	return (NULL);
 }

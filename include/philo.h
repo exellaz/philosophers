@@ -6,7 +6,7 @@
 /*   By: kkhai-ki <kkhai-ki@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/09 16:06:42 by kkhai-ki          #+#    #+#             */
-/*   Updated: 2024/10/16 10:14:06 by kkhai-ki         ###   ########.fr       */
+/*   Updated: 2024/10/16 10:54:56 by kkhai-ki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,8 +70,7 @@ void	*single_philo_routine(t_philo *philo);
 void	print_status(t_philo *philo, char *str, bool death_status);
 void	*philosopher(void *data);
 
-void	think_routine(t_philo *philo, bool initial);
-void	eat_sleep_routine(t_philo *philo);
+void	eat_sleep_think(t_philo *philo);
 
 bool	sim_stopped(t_table *table);
 void	set_end_status(t_table *table, bool status);
