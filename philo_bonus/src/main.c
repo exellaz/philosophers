@@ -6,7 +6,7 @@
 /*   By: kkhai-ki <kkhai-ki@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 13:55:43 by kkhai-ki          #+#    #+#             */
-/*   Updated: 2024/10/17 14:20:22 by kkhai-ki         ###   ########.fr       */
+/*   Updated: 2024/10/18 12:36:30 by kkhai-ki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ int	main(int ac, char *av[])
 	if (!is_valid_input(ac, av))
 		return (1);
 	if (init_table(&table, ac, av) != 0)
-		return (1);
+		return (cleanup_sem(&table), 1);
+	cleanup_sem(&table);
 	return (0);
 }
