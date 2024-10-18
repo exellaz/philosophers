@@ -6,7 +6,7 @@
 /*   By: kkhai-ki <kkhai-ki@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 13:53:51 by kkhai-ki          #+#    #+#             */
-/*   Updated: 2024/10/18 12:35:51 by kkhai-ki         ###   ########.fr       */
+/*   Updated: 2024/10/18 19:46:42 by kkhai-ki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,11 +33,28 @@
 # define SEM_PHILO_FULL "/philo_full"
 # define SEM_PHILO_DEAD "/philo_dead"
 # define SEM_SIM_END "/philo_sim_end"
+# define SEM_PHILO_EAT "/philo_eat"
 
+typedef struct s_table	t_table;
+
+typedef struct s_philo
+{
+	int		id;
+	sem_t	*sem_forks;
+	sem_t	*sem_write;
+	sem_t	*sem_philo_full;
+	sem_t	*sem_philo_dead;
+	sem_t	*sem_eat;
+	char	*sem_eat_name;
+	time_t	last_meal;
+	int		eat_count;
+	t_table	*table;
+}	t_philo;
 
 typedef struct s_table
 {
-	int	nb_philo;
+	int		nb_philo;
+	t_philo *philos;
 	time_t	start_time;
 	time_t	time_to_die;
 	time_t	time_to_eat;
@@ -55,5 +72,11 @@ bool	is_valid_input(int ac, char **av);
 
 int	init_table(t_table *table, int ac, char **av);
 void	cleanup_sem(t_table *table);
+
+/*Utils*/
+size_t	ft_strlen(const char *s);
+void	*ft_memcpy(void *dst, const void *src, size_t n);
+char	*ft_strjoin(char *s1, char *s2);
+char	*ft_utoa(unsigned int nb, size_t len);
 
 #endif
