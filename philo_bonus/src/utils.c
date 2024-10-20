@@ -6,7 +6,7 @@
 /*   By: kkhai-ki <kkhai-ki@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 19:38:05 by kkhai-ki          #+#    #+#             */
-/*   Updated: 2024/10/18 19:39:46 by kkhai-ki         ###   ########.fr       */
+/*   Updated: 2024/10/20 13:14:12 by kkhai-ki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,4 +78,18 @@ char	*ft_utoa(unsigned int nb, size_t len)
 		nb /= 10;
 	}
 	return (ret);
+}
+
+time_t	get_time_in_ms(void)
+{
+	struct timeval		time;
+
+	gettimeofday(&time, NULL);
+	return ((time.tv_sec * 1000) + (time.tv_usec / 1000));
+}
+
+void	print_status(t_philo *philo, char *str)
+{
+	printf("%ld %d %s\n", get_time_in_ms() - philo->table->start_time,
+		philo->id + 1, str);
 }

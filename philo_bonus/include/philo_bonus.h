@@ -6,7 +6,7 @@
 /*   By: kkhai-ki <kkhai-ki@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 13:53:51 by kkhai-ki          #+#    #+#             */
-/*   Updated: 2024/10/20 12:21:44 by kkhai-ki         ###   ########.fr       */
+/*   Updated: 2024/10/20 13:35:56 by kkhai-ki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@
 # include <stdbool.h>
 # include <sys/time.h>
 # include <sys/stat.h>
+# include <sys/wait.h>
 # include <stdio.h>
 
 # define PHILO_MAX 200
@@ -54,7 +55,8 @@ typedef struct s_philo
 typedef struct s_table
 {
 	int		nb_philo;
-	t_philo *philos;
+	t_philo	*philos;
+	t_philo	current_philo;
 	time_t	start_time;
 	time_t	time_to_die;
 	time_t	time_to_eat;
@@ -79,5 +81,10 @@ size_t	ft_strlen(const char *s);
 void	*ft_memcpy(void *dst, const void *src, size_t n);
 char	*ft_strjoin(char *s1, char *s2);
 char	*ft_utoa(unsigned int nb, size_t len);
+time_t	get_time_in_ms(void);
+void	print_status(t_philo *philo, char *str);
+
+/*Routines*/
+void	philosopher(t_table *table);
 
 #endif
