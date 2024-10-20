@@ -6,7 +6,7 @@
 /*   By: kkhai-ki <kkhai-ki@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 14:14:58 by kkhai-ki          #+#    #+#             */
-/*   Updated: 2024/10/20 12:26:13 by kkhai-ki         ###   ########.fr       */
+/*   Updated: 2024/10/20 15:00:00 by kkhai-ki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ void	cleanup_sem(t_table *table)
 	unlink_global_sem();
 }
 
-static int	init_global_sem(t_table *table)
+static int	open_table_global_sem(t_table *table)
 {
 	unlink_global_sem();
 	table->sem_forks = sem_open(SEM_FORKS, O_CREAT, S_IRUSR | S_IWUSR, table->nb_philo);
@@ -113,7 +113,7 @@ int	init_table(t_table *table, int ac, char **av)
 	table->must_eat_count = -1;
 	if (ac == 6)
 		table->must_eat_count = philo_atoi(av[i++]);
-	if (init_global_sem(table) != 0)
+	if (open_table_global_sem(table) != 0)
 		return (1);
 	if (init_philosophers(table, &table->philos) != 0)
 		return (1);

@@ -6,7 +6,7 @@
 /*   By: kkhai-ki <kkhai-ki@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/20 12:46:02 by kkhai-ki          #+#    #+#             */
-/*   Updated: 2024/10/20 13:33:56 by kkhai-ki         ###   ########.fr       */
+/*   Updated: 2024/10/20 13:43:31 by kkhai-ki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ static void	single_philo_routine(t_philo *philo)
 	print_status(philo, "has taken a fork");
 	philo_sleep(philo->table->time_to_die);
 	print_status(philo, "died");
-	exit(1);
+	exit(0);
 }
 
 void	philosopher(t_table *table)
