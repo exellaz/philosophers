@@ -6,7 +6,7 @@
 /*   By: kkhai-ki <kkhai-ki@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 14:14:58 by kkhai-ki          #+#    #+#             */
-/*   Updated: 2024/10/18 19:48:11 by kkhai-ki         ###   ########.fr       */
+/*   Updated: 2024/10/20 12:26:13 by kkhai-ki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,6 +116,9 @@ int	init_table(t_table *table, int ac, char **av)
 	if (init_global_sem(table) != 0)
 		return (1);
 	if (init_philosophers(table, &table->philos) != 0)
+		return (1);
+	table->pids = malloc(sizeof(pid_t) * table->nb_philo);
+	if (!table->pids)
 		return (1);
 	return (0);
 }

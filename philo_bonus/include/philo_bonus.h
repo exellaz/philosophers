@@ -6,7 +6,7 @@
 /*   By: kkhai-ki <kkhai-ki@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 13:53:51 by kkhai-ki          #+#    #+#             */
-/*   Updated: 2024/10/18 19:46:42 by kkhai-ki         ###   ########.fr       */
+/*   Updated: 2024/10/20 12:21:44 by kkhai-ki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ typedef struct s_table
 	sem_t	*sem_philo_full;
 	sem_t	*sem_philo_dead;
 	sem_t	*sem_sim_end;
+	pid_t	*pids;
 }	t_table;
 
 int	philo_atoi(char *str);
