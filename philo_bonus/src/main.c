@@ -6,7 +6,7 @@
 /*   By: kkhai-ki <kkhai-ki@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 13:55:43 by kkhai-ki          #+#    #+#             */
-/*   Updated: 2024/10/20 13:38:23 by kkhai-ki         ###   ########.fr       */
+/*   Updated: 2024/10/20 17:28:20 by kkhai-ki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,23 @@ static int	start_sim(t_table *table)
 	return (0);
 }
 
+void	wait_for_sim(t_table *table)
+{
+	int	i;
+
+	sim_start_wait(table->start_time);
+	while (1)
+	{
+		i = 0;
+		while (i < table->nb_philo)
+		{
+			waitpid(table->pids[i], 0, WNOHANG);
+			if (get_time_in_ms() == table->start_time + 10000)
+				break ;
+		}
+	}
+}
+
 int	main(int ac, char *av[])
 {
 	t_table	table;
@@ -48,6 +65,6 @@ int	main(int ac, char *av[])
 		return (cleanup_sem(&table), 1);
 	cleanup_sem(&table);
 	start_sim(&table);
-	waitpid(table.pids[0], NULL, 0);
+	wait_for_sim(&table);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: kkhai-ki <kkhai-ki@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 13:53:51 by kkhai-ki          #+#    #+#             */
-/*   Updated: 2024/10/20 14:57:49 by kkhai-ki         ###   ########.fr       */
+/*   Updated: 2024/10/20 15:21:49 by kkhai-ki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,7 @@ typedef struct s_philo
 	char	*sem_eat_name;
 	time_t	last_meal;
 	int		eat_count;
+	int		forks_held;
 	t_table	*table;
 }	t_philo;
 
@@ -68,6 +69,7 @@ typedef struct s_table
 	sem_t	*sem_philo_dead;
 	sem_t	*sem_sim_end;
 	pid_t	*pids;
+	bool	sim_end; //Temp for debug
 }	t_table;
 
 int	philo_atoi(char *str);
@@ -84,6 +86,7 @@ char	*ft_strjoin(char *s1, char *s2);
 char	*ft_utoa(unsigned int nb, size_t len);
 time_t	get_time_in_ms(void);
 void	print_status(t_philo *philo, char *str);
+void	sim_start_wait(time_t start_time);
 
 /*Routines*/
 

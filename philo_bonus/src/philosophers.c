@@ -6,13 +6,13 @@
 /*   By: kkhai-ki <kkhai-ki@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/20 12:46:02 by kkhai-ki          #+#    #+#             */
-/*   Updated: 2024/10/20 13:43:31 by kkhai-ki         ###   ########.fr       */
+/*   Updated: 2024/10/20 17:43:28 by kkhai-ki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_bonus.h"
 
-static void	sim_start_wait(time_t start_time)
+void	sim_start_wait(time_t start_time)
 {
 	while (get_time_in_ms() < start_time)
 		continue ;
@@ -45,11 +45,55 @@ static void	single_philo_routine(t_philo *philo)
 	exit(0);
 }
 
+static void	pick_up_fork(t_philo *philo)
+{
+	sem_wait(philo->sem_forks);
+	sem_wait(philo->sem_eat);
+	if (philo->forks_held <= 1)
+		print_status(philo, "has taken a fork");
+	philo->forks_held++;
+	sem_post(philo->sem_eat);
+}
+
+static void	eat_sleep_routine(t_philo *philo)
+{
+	pick_up_fork(philo);
+	pick_up_fork(philo);
+	print_status(philo, "is eating");
+	sem_wait(philo->sem_eat);
+	philo->last_meal = get_time_in_ms();
+	sem_post(philo->sem_eat);
+	philo_sleep(philo->table->time_to_eat);
+	print_status(philo, "is sleeping");
+	sem_post(philo->sem_forks);
+	sem_post(philo->sem_forks);
+	sem_wait(philo->sem_eat);
+	philo->forks_held -= 2;
+	philo->eat_count++;
+	sem_post(philo->sem_eat);
+	philo_sleep(philo->table->time_to_sleep);
+	print_status(philo, "is thinking");
+}
+
 void	philosopher(t_table *table)
 {
 	t_philo	*philo;
 
 	philo = &table->current_philo;
-	if (philo->table->nb_philo == 1)
+	if (table->nb_philo == 1)
 		single_philo_routine(philo);
+	if (table->must_eat_count == 0)
+	{
+		sem_post(philo->sem_philo_full);
+		exit(0);
+	}
+	init_philo_ipc(table, philo);
+	sem_wait(philo->sem_eat);
+	philo->last_meal = table->start_time;
+	sem_post(philo->sem_eat);
+	sim_start_wait(table->start_time);
+	if (philo->id % 2)
+		usleep(5000);
+	while (1)
+		eat_sleep_routine(philo);
 }
