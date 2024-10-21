@@ -6,7 +6,7 @@
 /*   By: kkhai-ki <kkhai-ki@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/20 12:46:02 by kkhai-ki          #+#    #+#             */
-/*   Updated: 2024/10/20 17:43:28 by kkhai-ki         ###   ########.fr       */
+/*   Updated: 2024/10/21 15:09:48 by kkhai-ki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,9 +39,9 @@ static void	single_philo_routine(t_philo *philo)
 		sem_post(philo->sem_philo_full);
 		exit(1);
 	}
-	print_status(philo, "has taken a fork");
+	print_status(philo, "has taken a fork", false);
 	philo_sleep(philo->table->time_to_die);
-	print_status(philo, "died");
+	print_status(philo, "died", true);
 	exit(0);
 }
 
@@ -50,7 +50,7 @@ static void	pick_up_fork(t_philo *philo)
 	sem_wait(philo->sem_forks);
 	sem_wait(philo->sem_eat);
 	if (philo->forks_held <= 1)
-		print_status(philo, "has taken a fork");
+		print_status(philo, "has taken a fork", false);
 	philo->forks_held++;
 	sem_post(philo->sem_eat);
 }
@@ -59,12 +59,12 @@ static void	eat_sleep_routine(t_philo *philo)
 {
 	pick_up_fork(philo);
 	pick_up_fork(philo);
-	print_status(philo, "is eating");
+	print_status(philo, "is eating", false);
 	sem_wait(philo->sem_eat);
 	philo->last_meal = get_time_in_ms();
 	sem_post(philo->sem_eat);
 	philo_sleep(philo->table->time_to_eat);
-	print_status(philo, "is sleeping");
+	print_status(philo, "is sleeping", false);
 	sem_post(philo->sem_forks);
 	sem_post(philo->sem_forks);
 	sem_wait(philo->sem_eat);
@@ -72,10 +72,10 @@ static void	eat_sleep_routine(t_philo *philo)
 	philo->eat_count++;
 	sem_post(philo->sem_eat);
 	philo_sleep(philo->table->time_to_sleep);
-	print_status(philo, "is thinking");
+	print_status(philo, "is thinking", false);
 }
 
-void	philosopher(t_table *table)
+void	*philosopher(t_table *table)
 {
 	t_philo	*philo;
 
@@ -95,5 +95,10 @@ void	philosopher(t_table *table)
 	if (philo->id % 2)
 		usleep(5000);
 	while (1)
+	{
+		if (philo->dead == true)
+			exit(0) ;
 		eat_sleep_routine(philo);
+	}
+	exit(0);
 }

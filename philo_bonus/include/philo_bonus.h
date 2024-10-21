@@ -6,7 +6,7 @@
 /*   By: kkhai-ki <kkhai-ki@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 13:53:51 by kkhai-ki          #+#    #+#             */
-/*   Updated: 2024/10/20 15:21:49 by kkhai-ki         ###   ########.fr       */
+/*   Updated: 2024/10/21 14:53:15 by kkhai-ki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,8 @@ typedef struct s_philo
 	int		eat_count;
 	int		forks_held;
 	t_table	*table;
+	pthread_t	death_monitor;
+	bool	dead;
 }	t_philo;
 
 typedef struct s_table
@@ -70,6 +72,7 @@ typedef struct s_table
 	sem_t	*sem_sim_end;
 	pid_t	*pids;
 	bool	sim_end; //Temp for debug
+	pthread_t	global_monitor;
 }	t_table;
 
 int	philo_atoi(char *str);
@@ -85,15 +88,19 @@ void	*ft_memcpy(void *dst, const void *src, size_t n);
 char	*ft_strjoin(char *s1, char *s2);
 char	*ft_utoa(unsigned int nb, size_t len);
 time_t	get_time_in_ms(void);
-void	print_status(t_philo *philo, char *str);
+void	print_status(t_philo *philo, char *str, bool death_report);
 void	sim_start_wait(time_t start_time);
 
 /*Routines*/
 
-void	philosopher(t_table *table);
+void	*philosopher(t_table *table);
+void	*local_monitor(void *data);
+void	*global_monitor(void *data);
+int		start_death_monitor(t_table *table);
 
 /*IPC*/
 
 void	init_philo_ipc(t_table *table, t_philo *philo);
+bool	has_sim_ended(t_table *table);
 
 #endif

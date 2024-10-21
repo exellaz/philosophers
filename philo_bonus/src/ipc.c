@@ -6,7 +6,7 @@
 /*   By: kkhai-ki <kkhai-ki@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/20 13:53:31 by kkhai-ki          #+#    #+#             */
-/*   Updated: 2024/10/20 15:39:40 by kkhai-ki         ###   ########.fr       */
+/*   Updated: 2024/10/21 15:10:11 by kkhai-ki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,8 @@ void	init_philo_ipc(t_table *table, t_philo *philo)
 	if (open_philo_global_sem(philo) != 0)
 		exit(1);
 	if (open_philo_eat_sem(philo) != 0)
+		exit(1);
+	if (pthread_create(&philo->death_monitor, NULL, &local_monitor, table) != 0)
 		exit(1);
 	return ;
 }

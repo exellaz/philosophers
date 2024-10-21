@@ -6,7 +6,7 @@
 /*   By: kkhai-ki <kkhai-ki@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/18 19:38:05 by kkhai-ki          #+#    #+#             */
-/*   Updated: 2024/10/20 13:14:12 by kkhai-ki         ###   ########.fr       */
+/*   Updated: 2024/10/21 15:11:13 by kkhai-ki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,8 +88,11 @@ time_t	get_time_in_ms(void)
 	return ((time.tv_sec * 1000) + (time.tv_usec / 1000));
 }
 
-void	print_status(t_philo *philo, char *str)
+void	print_status(t_philo *philo, char *str, bool death_report)
 {
+	sem_wait(philo->sem_write);
 	printf("%ld %d %s\n", get_time_in_ms() - philo->table->start_time,
 		philo->id + 1, str);
+	if (death_report == false)
+		sem_post(philo->sem_write);
 }

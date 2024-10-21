@@ -6,7 +6,7 @@
 /*   By: kkhai-ki <kkhai-ki@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 13:55:43 by kkhai-ki          #+#    #+#             */
-/*   Updated: 2024/10/20 17:28:20 by kkhai-ki         ###   ########.fr       */
+/*   Updated: 2024/10/21 14:57:33 by kkhai-ki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@ static int	start_sim(t_table *table)
 		}
 		i++;
 	}
+	// if (pthread_create(&table->global_monitor, NULL, &global_monitor, table))
+	// 	return (1);
 	return (0);
 }
 
@@ -66,5 +68,6 @@ int	main(int ac, char *av[])
 	cleanup_sem(&table);
 	start_sim(&table);
 	wait_for_sim(&table);
+	// pthread_join(table.global_monitor, NULL);
 	return (0);
 }
