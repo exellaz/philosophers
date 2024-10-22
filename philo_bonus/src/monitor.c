@@ -6,13 +6,13 @@
 /*   By: kkhai-ki <kkhai-ki@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 11:41:12 by kkhai-ki          #+#    #+#             */
-/*   Updated: 2024/10/21 14:53:24 by kkhai-ki         ###   ########.fr       */
+/*   Updated: 2024/10/22 13:48:00 by kkhai-ki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_bonus.h"
 
-bool	has_sim_ended(t_table *table)
+bool	sim_ended(t_table *table)
 {
 	bool	status;
 
@@ -29,9 +29,36 @@ void	kill_philos(t_table *table)
 	i = 0;
 	while (i < table->nb_philo)
 	{
-		kill(table->pids[i], SIGKILL);
+		kill(table->pids[i], SIGTERM);
 		i++;
 	}
+}
+
+void	*global_eat_monitor(void *data)
+{
+	t_table *table;
+
+	table = (t_table *)data;
+	if (table->must_eat_count < 0 || table->time_to_die == 0 || table->nb_philo == 1)
+		return (NULL);
+	sim_start_wait(table->start_time);
+		// printf("Must eat count: %d\n", table->must_eat_count);
+	while (table->philos_full < table->nb_philo)
+	{
+		if (sim_ended(table) == true)
+			return (NULL);
+		sem_wait(table->sem_philo_full);
+		if (sim_ended(table) == false)
+			table->philos_full++;
+		else
+			return (NULL);
+	}
+	sem_wait(table->sem_sim_end);
+	table->sim_end = true;
+	kill_philos(table);
+	sem_post(table->sem_philo_dead);
+	sem_post(table->sem_sim_end);
+	return (NULL);
 }
 
 void	*global_monitor(void *data)
@@ -40,12 +67,10 @@ void	*global_monitor(void *data)
 
 	table = (t_table *)data;
 	sim_start_wait(table->start_time);
-	if (has_sim_ended(table) == true)
-	{
+	if (sim_ended(table) == true)
 		return (NULL);
-	}
 	sem_wait(table->sem_philo_dead);
-	if (has_sim_ended(table) == true)
+	if (sim_ended(table) == true)
 		return (NULL);
 	sem_wait(table->sem_sim_end);
 	table->sim_end = true;
@@ -74,6 +99,12 @@ static bool	end_condition(t_table *table, t_philo *philo)
 		sem_post(philo->sem_eat);
 		return (true);
 	}
+	if (table->must_eat_count != -1 && philo->ate_enough == false && philo->eat_count >= table->must_eat_count)
+	{
+		// printf("Eat Count: (%d)\n", philo->eat_count);
+		sem_post(philo->sem_philo_full);
+		philo->ate_enough = true;
+	}
 	sem_post(philo->sem_eat);
 	return (false);
 }
@@ -88,15 +119,10 @@ void	*local_monitor(void *data)
 	sem_wait(table->current_philo.sem_philo_dead);
 	sem_wait(table->current_philo.sem_philo_full);
 	sim_start_wait(table->start_time);
-	while (1)
+	while (end_condition(table, &table->current_philo) == false)
 	{
-		if (end_condition(table, &table->current_philo) == true)
-		{
-			table->current_philo.dead = true;
-			return (NULL);
-			// continue ;
-		}
 		usleep(100);
+		continue ;
 	}
 	return (NULL);
 }

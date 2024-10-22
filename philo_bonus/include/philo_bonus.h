@@ -6,7 +6,7 @@
 /*   By: kkhai-ki <kkhai-ki@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 13:53:51 by kkhai-ki          #+#    #+#             */
-/*   Updated: 2024/10/21 14:53:15 by kkhai-ki         ###   ########.fr       */
+/*   Updated: 2024/10/21 19:47:40 by kkhai-ki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,8 @@
 # define SEM_SIM_END "/philo_sim_end"
 # define SEM_PHILO_EAT "/philo_eat"
 
+# define CHILD_EXIT_PHILO_FULL 10
+
 typedef struct s_table	t_table;
 
 typedef struct s_philo
@@ -52,6 +54,7 @@ typedef struct s_philo
 	int		forks_held;
 	t_table	*table;
 	pthread_t	death_monitor;
+	bool		ate_enough;
 	bool	dead;
 }	t_philo;
 
@@ -73,6 +76,8 @@ typedef struct s_table
 	pid_t	*pids;
 	bool	sim_end; //Temp for debug
 	pthread_t	global_monitor;
+	pthread_t	global_eat_monitor;
+	int		philos_full;
 }	t_table;
 
 int	philo_atoi(char *str);
@@ -97,10 +102,11 @@ void	*philosopher(t_table *table);
 void	*local_monitor(void *data);
 void	*global_monitor(void *data);
 int		start_death_monitor(t_table *table);
+void	*global_eat_monitor(void *data);
 
 /*IPC*/
 
 void	init_philo_ipc(t_table *table, t_philo *philo);
-bool	has_sim_ended(t_table *table);
+bool	sim_ended(t_table *table);
 
 #endif

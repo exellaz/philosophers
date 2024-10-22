@@ -6,7 +6,7 @@
 /*   By: kkhai-ki <kkhai-ki@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/20 12:46:02 by kkhai-ki          #+#    #+#             */
-/*   Updated: 2024/10/21 15:09:48 by kkhai-ki         ###   ########.fr       */
+/*   Updated: 2024/10/21 20:45:29 by kkhai-ki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,8 +96,8 @@ void	*philosopher(t_table *table)
 		usleep(5000);
 	while (1)
 	{
-		if (philo->dead == true)
-			exit(0) ;
+		// if (philo->dead == true)
+		// 	exit(0) ;
 		eat_sleep_routine(philo);
 	}
 	exit(0);

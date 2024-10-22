@@ -6,7 +6,7 @@
 /*   By: kkhai-ki <kkhai-ki@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 14:14:58 by kkhai-ki          #+#    #+#             */
-/*   Updated: 2024/10/20 15:00:00 by kkhai-ki         ###   ########.fr       */
+/*   Updated: 2024/10/21 20:09:15 by kkhai-ki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,7 @@ static int	init_philosophers(t_table *table, t_philo **philos)
 	{
 		(*philos)[i].id = i;
 		(*philos)[i].eat_count = 0;
+		(*philos)[i].ate_enough = false;
 		(*philos)[i].table = table;
 		if (set_sem_eat_name(&(*philos)[i], SEM_PHILO_EAT, (unsigned int)i) != 0)
 			return (1); //ERROR HANDLING
