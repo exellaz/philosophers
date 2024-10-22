@@ -6,7 +6,7 @@
 /*   By: kkhai-ki <kkhai-ki@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/20 12:46:02 by kkhai-ki          #+#    #+#             */
-/*   Updated: 2024/10/21 20:45:29 by kkhai-ki         ###   ########.fr       */
+/*   Updated: 2024/10/22 15:55:39 by kkhai-ki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,21 @@ static void	philo_sleep(time_t sleep_time)
 	wake_up = get_time_in_ms() + sleep_time;
 	while (get_time_in_ms() < wake_up)
 		usleep(100);
+}
+
+void	think_routine(t_philo *philo)
+{
+	time_t	think_time;
+
+	sem_wait(philo->sem_eat);
+	think_time = (philo->table->time_to_die - (get_time_in_ms() - philo->last_meal) - philo->table->time_to_eat) / 2;
+	sem_post(philo->sem_eat);
+	if (think_time < 0)
+		think_time = 0;
+	if (think_time > 600)
+		think_time = 200;
+	print_status(philo, "is thinking", false);
+	philo_sleep(think_time);
 }
 
 static void	single_philo_routine(t_philo *philo)
@@ -72,7 +87,10 @@ static void	eat_sleep_routine(t_philo *philo)
 	philo->eat_count++;
 	sem_post(philo->sem_eat);
 	philo_sleep(philo->table->time_to_sleep);
-	print_status(philo, "is thinking", false);
+	if (philo->table->nb_philo % 2 != 0)
+		think_routine(philo);
+	else
+		print_status(philo, "is thinking", false);
 }
 
 void	*philosopher(t_table *table)
@@ -95,10 +113,6 @@ void	*philosopher(t_table *table)
 	if (philo->id % 2)
 		usleep(5000);
 	while (1)
-	{
-		// if (philo->dead == true)
-		// 	exit(0) ;
 		eat_sleep_routine(philo);
-	}
 	exit(0);
 }
