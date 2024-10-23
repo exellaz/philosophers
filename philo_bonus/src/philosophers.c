@@ -6,7 +6,7 @@
 /*   By: kkhai-ki <kkhai-ki@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/20 12:46:02 by kkhai-ki          #+#    #+#             */
-/*   Updated: 2024/10/22 15:55:39 by kkhai-ki         ###   ########.fr       */
+/*   Updated: 2024/10/23 18:39:55 by kkhai-ki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,8 +34,8 @@ void	think_routine(t_philo *philo)
 	sem_wait(philo->sem_eat);
 	think_time = (philo->table->time_to_die - (get_time_in_ms() - philo->last_meal) - philo->table->time_to_eat) / 2;
 	sem_post(philo->sem_eat);
-	if (think_time < 0)
-		think_time = 0;
+	if (think_time <= 0)
+		think_time = 1;
 	if (think_time > 600)
 		think_time = 200;
 	print_status(philo, "is thinking", false);
@@ -44,20 +44,23 @@ void	think_routine(t_philo *philo)
 
 static void	single_philo_routine(t_philo *philo)
 {
-	philo->sem_philo_full = sem_open(SEM_PHILO_FULL, O_CREAT, S_IRUSR | S_IWUSR, philo->table->nb_philo);
-	if (philo->sem_philo_full == SEM_FAILED)
-		exit(1);
+	// philo->sem_philo_full = sem_open(SEM_PHILO_FULL, O_CREAT, S_IRUSR | S_IWUSR, philo->table->nb_philo);
+	// if (philo->sem_philo_full == SEM_FAILED)
+	// 	exit(1);
+	init_philo_ipc(philo->table, philo);
 	sem_wait(philo->sem_philo_full);
 	sim_start_wait(philo->table->start_time);
 	if (philo->table->must_eat_count == 0)
 	{
 		sem_post(philo->sem_philo_full);
-		exit(1);
+		exit(SINGLE_PHILO_EXIT);
 	}
-	print_status(philo, "has taken a fork", false);
+	printf("%ld %d %s\n", get_time_in_ms() - philo->table->start_time,
+		philo->id + 1, "has taken a fork");
 	philo_sleep(philo->table->time_to_die);
-	print_status(philo, "died", true);
-	exit(0);
+	printf("%ld %d %s\n", get_time_in_ms() - philo->table->start_time,
+		philo->id + 1, "died");
+	exit(SINGLE_PHILO_EXIT);
 }
 
 static void	pick_up_fork(t_philo *philo)
@@ -70,7 +73,7 @@ static void	pick_up_fork(t_philo *philo)
 	sem_post(philo->sem_eat);
 }
 
-static void	eat_sleep_routine(t_philo *philo)
+static void	eat_sleep_think(t_philo *philo)
 {
 	pick_up_fork(philo);
 	pick_up_fork(philo);
@@ -113,6 +116,6 @@ void	*philosopher(t_table *table)
 	if (philo->id % 2)
 		usleep(5000);
 	while (1)
-		eat_sleep_routine(philo);
+		eat_sleep_think(philo);
 	exit(0);
 }

@@ -6,7 +6,7 @@
 /*   By: kkhai-ki <kkhai-ki@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 13:53:51 by kkhai-ki          #+#    #+#             */
-/*   Updated: 2024/10/21 19:47:40 by kkhai-ki         ###   ########.fr       */
+/*   Updated: 2024/10/23 18:31:22 by kkhai-ki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@
 # define SEM_SIM_END "/philo_sim_end"
 # define SEM_PHILO_EAT "/philo_eat"
 
-# define CHILD_EXIT_PHILO_FULL 10
+# define SINGLE_PHILO_EXIT 10
 
 typedef struct s_table	t_table;
 
