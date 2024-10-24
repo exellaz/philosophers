@@ -6,7 +6,7 @@
 /*   By: kkhai-ki <kkhai-ki@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 14:14:58 by kkhai-ki          #+#    #+#             */
-/*   Updated: 2024/10/21 20:09:15 by kkhai-ki         ###   ########.fr       */
+/*   Updated: 2024/10/24 15:52:32 by kkhai-ki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,6 +111,7 @@ int	init_table(t_table *table, int ac, char **av)
 	table->time_to_die = philo_atoi(av[i++]);
 	table->time_to_eat = philo_atoi(av[i++]);
 	table->time_to_sleep = philo_atoi(av[i++]);
+	table->sim_end = false;
 	table->must_eat_count = -1;
 	if (ac == 6)
 		table->must_eat_count = philo_atoi(av[i++]);

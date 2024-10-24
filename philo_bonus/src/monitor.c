@@ -6,7 +6,7 @@
 /*   By: kkhai-ki <kkhai-ki@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 11:41:12 by kkhai-ki          #+#    #+#             */
-/*   Updated: 2024/10/23 15:47:13 by kkhai-ki         ###   ########.fr       */
+/*   Updated: 2024/10/24 16:25:42 by kkhai-ki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,6 @@ void	*global_eat_monitor(void *data)
 	if (table->must_eat_count < 0 || table->time_to_die == 0 || table->nb_philo == 1)
 		return (NULL);
 	sim_start_wait(table->start_time);
-		// printf("Must eat count: %d\n", table->must_eat_count);
 	while (table->philos_full < table->nb_philo)
 	{
 		if (sim_ended(table) == true)
@@ -66,6 +65,8 @@ void	*global_monitor(void *data)
 	t_table	*table;
 
 	table = (t_table *)data;
+	if (table->nb_philo == 1)
+		return (NULL);
 	sim_start_wait(table->start_time);
 	if (sim_ended(table) == true)
 		return (NULL);
@@ -80,18 +81,12 @@ void	*global_monitor(void *data)
 	return (NULL);
 }
 
-int	start_death_monitor(t_table *table)
-{
-	(void)table;
-	return (0);
-}
-
-static bool	end_condition(t_table *table, t_philo *philo)
+static bool	end_condition_met(t_table *table, t_philo *philo)
 {
 	time_t	current_time;
 
-	current_time = get_time_in_ms();
 	sem_wait(philo->sem_eat);
+	current_time = get_time_in_ms();
 	if ((current_time - philo->last_meal) >= table->time_to_die)
 	{
 		print_status(philo, "died", true);
@@ -112,14 +107,16 @@ static bool	end_condition(t_table *table, t_philo *philo)
 void	*local_monitor(void *data)
 {
 	t_table *table;
+	// t_philo	*philo;
 
 	table = (t_table *)data;
 	if (table->must_eat_count == 0)
 		return (NULL);
+	// philo = table->current_philo;
 	sem_wait(table->current_philo.sem_philo_dead);
 	sem_wait(table->current_philo.sem_philo_full);
 	sim_start_wait(table->start_time);
-	while (end_condition(table, &table->current_philo) == false)
+	while (end_condition_met(table, &table->current_philo) == false)
 	{
 		usleep(100);
 		continue ;

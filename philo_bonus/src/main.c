@@ -6,7 +6,7 @@
 /*   By: kkhai-ki <kkhai-ki@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 13:55:43 by kkhai-ki          #+#    #+#             */
-/*   Updated: 2024/10/23 18:38:22 by kkhai-ki         ###   ########.fr       */
+/*   Updated: 2024/10/24 16:25:06 by kkhai-ki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,58 @@ static int	start_sim(t_table *table)
 	return (0);
 }
 
+static int	get_child_status(t_table *table, pid_t pid)
+{
+	int	philo_exit_status;
+	int	status;
+
+	if (waitpid(pid, &philo_exit_status, WNOHANG) != 0)
+	{
+		if (WIFEXITED(philo_exit_status))
+		{
+			status = WEXITSTATUS(philo_exit_status);
+			if (status == EXIT_PHILO_DEAD)
+				return (kill_philos(table), 1);
+			if (status == EXIT_PHILO_FULL)
+			{
+				table->philos_full++;
+				return (1);
+			}
+			if (status == EXIT_PTHREAD_ERR
+				|| status == EXIT_SEM_ERR)
+				return (kill_philos(table), 2);
+		}
+	}
+	return (0);
+}
+
+static int	stop_sim(t_table *table)
+{
+	int	i;
+	int	child_status;
+
+	sim_start_wait(table->start_time);
+	while (sim_ended(table) == false)
+	{
+		i = 0;
+		while (i < table->nb_philo)
+		{
+			child_status = get_child_status(table, table->pids[i]);
+			if (child_status == 1 || child_status == 2)
+			{
+				sem_wait(table->sem_sim_end);
+				table->sim_end = true;
+				sem_post(table->sem_philo_full);
+				sem_post(table->sem_philo_dead);
+				sem_post(table->sem_sim_end);
+				return (child_status);
+			}
+			i++;
+		}
+	}
+	return (0);
+}
+
 void	wait_for_sim(t_table *table)
 {
 	int	i;
@@ -56,6 +108,7 @@ void	wait_for_sim(t_table *table)
 			i++;
 		}
 	}
+	printf("Sim ended!\n");
 }
 
 int	main(int ac, char *av[])
@@ -69,10 +122,7 @@ int	main(int ac, char *av[])
 		return (1);
 	if (init_table(&table, ac, av) != 0)
 		return (cleanup_sem(&table), 1);
-	// cleanup_sem(&table);
 	start_sim(&table);
-	wait_for_sim(&table);
-	// pthread_join(table.global_monitor, NULL);
-	// pthread_join(table.global_eat_monitor, NULL);
+	stop_sim(&table);
 	return (0);
 }

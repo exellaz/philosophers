@@ -6,7 +6,7 @@
 /*   By: kkhai-ki <kkhai-ki@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/20 12:46:02 by kkhai-ki          #+#    #+#             */
-/*   Updated: 2024/10/23 18:39:55 by kkhai-ki         ###   ########.fr       */
+/*   Updated: 2024/10/24 16:26:33 by kkhai-ki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,23 +44,20 @@ void	think_routine(t_philo *philo)
 
 static void	single_philo_routine(t_philo *philo)
 {
-	// philo->sem_philo_full = sem_open(SEM_PHILO_FULL, O_CREAT, S_IRUSR | S_IWUSR, philo->table->nb_philo);
-	// if (philo->sem_philo_full == SEM_FAILED)
-	// 	exit(1);
-	init_philo_ipc(philo->table, philo);
+	philo->sem_philo_full = sem_open(SEM_PHILO_FULL, O_CREAT, S_IRUSR | S_IWUSR, philo->table->nb_philo);
+	if (philo->sem_philo_full == SEM_FAILED)
+		exit(EXIT_SEM_ERR);
 	sem_wait(philo->sem_philo_full);
 	sim_start_wait(philo->table->start_time);
 	if (philo->table->must_eat_count == 0)
 	{
 		sem_post(philo->sem_philo_full);
-		exit(SINGLE_PHILO_EXIT);
+		exit(EXIT_PHILO_FULL);
 	}
-	printf("%ld %d %s\n", get_time_in_ms() - philo->table->start_time,
-		philo->id + 1, "has taken a fork");
+	print_status(philo, "has taken a fork", false);
 	philo_sleep(philo->table->time_to_die);
-	printf("%ld %d %s\n", get_time_in_ms() - philo->table->start_time,
-		philo->id + 1, "died");
-	exit(SINGLE_PHILO_EXIT);
+	print_status(philo, "died", true);
+	exit(EXIT_PHILO_DEAD);
 }
 
 static void	pick_up_fork(t_philo *philo)

@@ -6,7 +6,7 @@
 /*   By: kkhai-ki <kkhai-ki@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 13:53:51 by kkhai-ki          #+#    #+#             */
-/*   Updated: 2024/10/23 18:31:22 by kkhai-ki         ###   ########.fr       */
+/*   Updated: 2024/10/24 16:26:02 by kkhai-ki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,10 @@
 # define SEM_SIM_END "/philo_sim_end"
 # define SEM_PHILO_EAT "/philo_eat"
 
-# define SINGLE_PHILO_EXIT 10
+# define EXIT_PTHREAD_ERR	40
+# define EXIT_SEM_ERR		41
+# define EXIT_PHILO_FULL	42
+# define EXIT_PHILO_DEAD	43
 
 typedef struct s_table	t_table;
 
@@ -74,7 +77,7 @@ typedef struct s_table
 	sem_t	*sem_philo_dead;
 	sem_t	*sem_sim_end;
 	pid_t	*pids;
-	bool	sim_end; //Temp for debug
+	bool	sim_end;
 	pthread_t	global_monitor;
 	pthread_t	global_eat_monitor;
 	int		philos_full;
@@ -108,5 +111,7 @@ void	*global_eat_monitor(void *data);
 
 void	init_philo_ipc(t_table *table, t_philo *philo);
 bool	sim_ended(t_table *table);
+
+void	kill_philos(t_table *table);
 
 #endif
