@@ -6,20 +6,33 @@
 /*   By: kkhai-ki <kkhai-ki@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/21 11:41:12 by kkhai-ki          #+#    #+#             */
-/*   Updated: 2024/10/24 16:25:42 by kkhai-ki         ###   ########.fr       */
+/*   Updated: 2024/10/25 14:04:16 by kkhai-ki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philo_bonus.h"
 
-bool	sim_ended(t_table *table)
+static bool	end_condition_met(t_table *table, t_philo *philo)
 {
-	bool	status;
+	time_t	current_time;
 
-	sem_wait(table->sem_sim_end);
-	status = table->sim_end;
-	sem_post(table->sem_sim_end);
-	return (status);
+	sem_wait(philo->sem_eat);
+	current_time = get_time_in_ms();
+	if ((current_time - philo->last_meal) >= table->time_to_die)
+	{
+		print_status(philo, "died", true);
+		sem_post(philo->sem_philo_dead);
+		sem_post(philo->sem_eat);
+		return (true);
+	}
+	if (table->must_eat_count != -1 && philo->ate_enough == false
+		&& philo->eat_count >= table->must_eat_count)
+	{
+		sem_post(philo->sem_philo_full);
+		philo->ate_enough = true;
+	}
+	sem_post(philo->sem_eat);
+	return (false);
 }
 
 void	kill_philos(t_table *table)
@@ -36,10 +49,11 @@ void	kill_philos(t_table *table)
 
 void	*global_eat_monitor(void *data)
 {
-	t_table *table;
+	t_table	*table;
 
 	table = (t_table *)data;
-	if (table->must_eat_count < 0 || table->time_to_die == 0 || table->nb_philo == 1)
+	if (table->must_eat_count < 0 || table->time_to_die == 0
+		|| table->nb_philo == 1)
 		return (NULL);
 	sim_start_wait(table->start_time);
 	while (table->philos_full < table->nb_philo)
@@ -60,7 +74,7 @@ void	*global_eat_monitor(void *data)
 	return (NULL);
 }
 
-void	*global_monitor(void *data)
+void	*global_death_monitor(void *data)
 {
 	t_table	*table;
 
@@ -81,38 +95,13 @@ void	*global_monitor(void *data)
 	return (NULL);
 }
 
-static bool	end_condition_met(t_table *table, t_philo *philo)
-{
-	time_t	current_time;
-
-	sem_wait(philo->sem_eat);
-	current_time = get_time_in_ms();
-	if ((current_time - philo->last_meal) >= table->time_to_die)
-	{
-		print_status(philo, "died", true);
-		sem_post(philo->sem_philo_dead);
-		sem_post(philo->sem_eat);
-		return (true);
-	}
-	if (table->must_eat_count != -1 && philo->ate_enough == false && philo->eat_count >= table->must_eat_count)
-	{
-		// printf("Eat Count: (%d)\n", philo->eat_count);
-		sem_post(philo->sem_philo_full);
-		philo->ate_enough = true;
-	}
-	sem_post(philo->sem_eat);
-	return (false);
-}
-
 void	*local_monitor(void *data)
 {
-	t_table *table;
-	// t_philo	*philo;
+	t_table	*table;
 
 	table = (t_table *)data;
 	if (table->must_eat_count == 0)
 		return (NULL);
-	// philo = table->current_philo;
 	sem_wait(table->current_philo.sem_philo_dead);
 	sem_wait(table->current_philo.sem_philo_full);
 	sim_start_wait(table->start_time);

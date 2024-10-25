@@ -6,7 +6,7 @@
 #    By: kkhai-ki <kkhai-ki@student.42kl.edu.my>    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/10/09 16:06:48 by kkhai-ki          #+#    #+#              #
-#    Updated: 2024/10/24 15:34:42 by kkhai-ki         ###   ########.fr        #
+#    Updated: 2024/10/25 14:45:43 by kkhai-ki         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,13 +25,16 @@ INCLUDE = -Iinclude
 
 SRC_DIR = src
 
-SRC_FILES =	main	\
-			parse	\
-			init	\
-			utils	\
+SRC_FILES =	main			\
+			parse			\
+			init			\
+			utils			\
 			philosophers	\
-			ipc	\
-			monitor
+			ipc				\
+			monitor			\
+			philo_utils		\
+			sim				\
+			sem_utils
 
 SRC = $(addprefix $(SRC_DIR)/, $(addsuffix .c, $(SRC_FILES)))
 

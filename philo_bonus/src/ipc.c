@@ -6,7 +6,7 @@
 /*   By: kkhai-ki <kkhai-ki@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/20 13:53:31 by kkhai-ki          #+#    #+#             */
-/*   Updated: 2024/10/21 15:10:11 by kkhai-ki         ###   ########.fr       */
+/*   Updated: 2024/10/25 14:37:43 by kkhai-ki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,10 +35,13 @@ static int	open_philo_global_sem(t_philo *philo)
 
 static int	open_philo_eat_sem(t_philo *philo)
 {
-	philo->sem_eat = sem_open(philo->sem_eat_name, O_CREAT, S_IRUSR | S_IWUSR, 1);
+	philo->sem_eat = sem_open(philo->sem_eat_name,
+			O_CREAT, S_IRUSR | S_IWUSR, 1);
 	if (philo->sem_eat == SEM_FAILED)
 		return (1);
 	sem_unlink(philo->sem_eat_name);
+	free(philo->sem_eat_name);
+	philo->sem_eat_name = NULL;
 	return (0);
 }
 
@@ -51,7 +54,7 @@ void	init_philo_ipc(t_table *table, t_philo *philo)
 		exit(1);
 	if (open_philo_eat_sem(philo) != 0)
 		exit(1);
-	if (pthread_create(&philo->death_monitor, NULL, &local_monitor, table) != 0)
+	if (pthread_create(&philo->local_monitor, NULL, &local_monitor, table) != 0)
 		exit(1);
 	return ;
 }

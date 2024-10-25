@@ -6,11 +6,11 @@
 /*   By: kkhai-ki <kkhai-ki@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 14:00:28 by kkhai-ki          #+#    #+#             */
-/*   Updated: 2024/10/17 14:00:46 by kkhai-ki         ###   ########.fr       */
+/*   Updated: 2024/10/25 14:02:14 by kkhai-ki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "philo_bonus.h"
+#include "philo_bonus.h"
 
 static bool	is_only_digits(char *str)
 {
