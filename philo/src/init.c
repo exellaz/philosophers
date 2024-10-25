@@ -6,7 +6,7 @@
 /*   By: kkhai-ki <kkhai-ki@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/11 13:06:01 by kkhai-ki          #+#    #+#             */
-/*   Updated: 2024/10/16 13:48:09 by kkhai-ki         ###   ########.fr       */
+/*   Updated: 2024/10/25 14:48:16 by kkhai-ki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,17 +66,14 @@ static int	init_all_mutexes(t_table *table)
 
 int	init_table(t_table *table, int ac, char **av)
 {
-	int	i;
-
-	i = 1;
 	memset(table, 0, sizeof(t_table));
-	table->nb_philo = philo_atoi(av[i++]);
-	table->time_to_die = philo_atoi(av[i++]);
-	table->time_to_eat = philo_atoi(av[i++]);
-	table->time_to_sleep = philo_atoi(av[i++]);
+	table->nb_philo = philo_atoi(av[1]);
+	table->time_to_die = philo_atoi(av[2]);
+	table->time_to_eat = philo_atoi(av[3]);
+	table->time_to_sleep = philo_atoi(av[4]);
 	table->must_eat_count = -1;
 	if (ac == 6)
-		table->must_eat_count = philo_atoi(av[i++]);
+		table->must_eat_count = philo_atoi(av[5]);
 	if (init_all_mutexes(table) != 0)
 		return (1);
 	if (init_philo(table, &table->philos) != 0)
