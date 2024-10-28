@@ -6,7 +6,7 @@
 /*   By: kkhai-ki <kkhai-ki@student.42kl.edu.my>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/17 13:53:51 by kkhai-ki          #+#    #+#             */
-/*   Updated: 2024/10/25 14:44:56 by kkhai-ki         ###   ########.fr       */
+/*   Updated: 2024/10/28 12:25:36 by kkhai-ki         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,20 +42,20 @@ typedef struct s_table	t_table;
 
 typedef struct s_philo
 {
-	int			id;
-	int			eat_count;
-	int			forks_held;
-	bool		ate_enough;
-	bool		dead;
-	char		*sem_eat_name;
-	sem_t		*sem_forks;
-	sem_t		*sem_write;
-	sem_t		*sem_philo_full;
-	sem_t		*sem_philo_dead;
-	sem_t		*sem_eat;
-	time_t		last_meal;
-	t_table		*table;
-	pthread_t	local_monitor;
+	int					id;
+	int					forks_held;
+	bool				ate_enough;
+	bool				dead;
+	char				*sem_eat_name;
+	sem_t				*sem_forks;
+	sem_t				*sem_write;
+	sem_t				*sem_philo_full;
+	sem_t				*sem_philo_dead;
+	sem_t				*sem_eat;
+	t_table				*table;
+	pthread_t			local_monitor;
+	_Atomic int			eat_count;
+	_Atomic time_t		last_meal;
 }	t_philo;
 
 typedef struct s_table
@@ -63,7 +63,6 @@ typedef struct s_table
 	int				nb_philo;
 	int				must_eat_count;
 	int				philos_full;
-	_Atomic bool	sim_end;
 	sem_t			*sem_forks;
 	sem_t			*sem_write;
 	sem_t			*sem_philo_full;
@@ -78,6 +77,7 @@ typedef struct s_table
 	t_philo			current_philo;
 	pthread_t		global_death_monitor;
 	pthread_t		global_eat_monitor;
+	_Atomic bool	sim_end;
 }	t_table;
 
 /*Parsing*/
